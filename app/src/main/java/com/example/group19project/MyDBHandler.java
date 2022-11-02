@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+
 public class MyDBHandler extends SQLiteOpenHelper{
     private static final String TABLE_NAME = "userAccounts";
     private static final String COLUMN_ID = "id";
@@ -79,6 +81,23 @@ public class MyDBHandler extends SQLiteOpenHelper{
         }
         return false;
     }
-
+    public ArrayList<String> findUserDetails(String user) {
+        ArrayList<String> findList = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE userName=?";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{user});
+        if (cursor.getCount() == 0) {
+            // do nothing
+        } else {
+            while (cursor.moveToNext()) {
+                findList.add(cursor.getString(1));
+                findList.add(cursor.getString(4));
+            }
+        }
+        cursor.close();
+        db.close();
+        return findList;
+    }
 
 }
+

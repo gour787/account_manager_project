@@ -53,6 +53,7 @@ public class RegisterPage extends AppCompatActivity {
                 else{
                     dbHandler.addUser(info);
                     Toast.makeText(RegisterPage.this, "User added! ",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterPage.this, "Please swipe left to sign in ",Toast.LENGTH_SHORT).show();
                 }
 
             }

@@ -55,6 +55,7 @@ public class Information {
 
     public Information(String firstName, String lastName, String userName, String password, String accountType) {
         this.firstName = firstName;
+        this.lastName = lastName;
         this.userName = userName;
         this.password = password;
         this.accountType = accountType;
