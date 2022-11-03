@@ -122,7 +122,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         } else {
             while (cursor.moveToNext()) {
                 findList.add(cursor.getString(1));
-                findList.add(cursor.getString(4));
+                findList.add(cursor.getString(5));
             }
         }
         cursor.close();
