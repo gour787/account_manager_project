@@ -18,8 +18,10 @@ public class MyDBHandler extends SQLiteOpenHelper{
     private static final String COLUMN_USER_NAME = "userName";
     private static final String COLUMN_USER_PASSWORD = "password";
     private static final String COLUMN_USER_ACCOUNT_TYPE = "accountType";
+    private static final String COURSE_TABLE = "courseTable";
     private static final int DATABASE_VERSION = 1;
-    static String DATABASE_NAME="UserDataBase.db";
+    static String DATABASE_NAME="ProjectDataBase.db";
+
 
     public MyDBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION );
@@ -36,21 +38,48 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 + COLUMN_USER_PASSWORD + " TEXT, "
                 + COLUMN_USER_ACCOUNT_TYPE + " TEXT "
                 + ")";
-
+        String create_table_2_cmd = "CREATE TABLE "+COURSE_TABLE+"(courseCode TEXT, courseName TEXT)";
         db.execSQL(create_table_cmd);
+        db.execSQL(create_table_2_cmd);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + COURSE_TABLE);
         onCreate(db);
     }
 
-    public Cursor getData(Information user) {
+    public Cursor getData() {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME;
         return db.rawQuery(query, null); // returns "cursor" all products from the table
     }
+
+    public Cursor getCourseData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + COURSE_TABLE;
+        return db.rawQuery(query, null); // returns "cursor" all products from the table
+    }
+
+    public void addCourse(Course course) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("courseCode", course.getCourseID());
+        values.put("courseName", course.getCourseName());
+
+        db.insert(COURSE_TABLE, null, values);
+        db.close();
+    }
+    public void deleteCourse(String courseID, String courseName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        db.delete(COURSE_TABLE, "courseCode=? AND courseName=?", new String[]{courseID, courseName});
+        db.close();
+
+    }
+
     public void addUser( Information info){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -72,6 +101,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
         }
         return false;
     }
+
+
 
     public Boolean checkUserNameAndPassword(String userName, String passWord){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -97,6 +128,15 @@ public class MyDBHandler extends SQLiteOpenHelper{
         cursor.close();
         db.close();
         return findList;
+    }
+    public Boolean courseExists(String courseID, String courseName){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM courseTable WHERE courseCode= ? AND courseName=?"
+                ,new String[]{courseID, courseName});
+        if(cursor.getCount()>0){
+            return true;
+        }
+        return false;
     }
 
 }
