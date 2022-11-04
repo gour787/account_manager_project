@@ -2,6 +2,7 @@ package com.example.group19project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,12 +19,13 @@ import java.util.ArrayList;
 
 public class AdminPanel extends AppCompatActivity {
     EditText courseID, courseName, confirmID;
-    Button addButton, updateButton, deleteButton;
+    Button addButton, updateButton, deleteButton, deleteUser;
     ListView productListView;
     ArrayList<String> productList;
-    ArrayAdapter<String> special;
     ArrayAdapter adapter;
     MyDBHandler dbHandler;
+    RadioGroup radioGrouping;
+    RadioButton radioButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,7 @@ public class AdminPanel extends AppCompatActivity {
         addButton = findViewById(R.id.addButton);
         updateButton = findViewById(R.id.updateButton);
         deleteButton = findViewById(R.id.deleteButton);
+        deleteUser = findViewById(R.id.deleteUser);
 
         // listview
         productList = new ArrayList<>();
@@ -45,7 +50,8 @@ public class AdminPanel extends AppCompatActivity {
         // db handler
         dbHandler = new MyDBHandler(this);
 
-        //cursor
+        //radio
+        radioGrouping = findViewById(R.id.radioGroup2);
 
 
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -53,13 +59,20 @@ public class AdminPanel extends AppCompatActivity {
             public void onClick(View view) {
                 String corID = courseID.getText().toString();
                 String corName = courseName.getText().toString();
-                Course course = new Course(corName, corID);
-                dbHandler.addCourse(course);
-                courseID.setText("");
-                courseName.setText("");
-                Toast.makeText(AdminPanel.this, "Add product", Toast.LENGTH_SHORT).show();
+                if(!corID.isEmpty()&&!corName.isEmpty()){
+                    Course course = new Course(corName, corID);
+                    dbHandler.addCourse(course);
+                    courseID.setText("");
+                    courseName.setText("");
+                    confirmID.setVisibility(View.INVISIBLE);
+                    Toast.makeText(AdminPanel.this, "Add product", Toast.LENGTH_SHORT).show();
 
-                viewProducts();
+                    viewProducts();
+                }else{
+                    Toast.makeText(AdminPanel.this, "Add product failed", Toast.LENGTH_SHORT).show();
+                }
+                dbHandler.close();
+
             }
         });
 
@@ -74,6 +87,7 @@ public class AdminPanel extends AppCompatActivity {
                         dbHandler.deleteCourse(corID, corName);
                         courseID.setText("");
                         courseName.setText("");
+                        confirmID.setVisibility(View.INVISIBLE);
                         Toast.makeText(AdminPanel.this, "Delete product", Toast.LENGTH_SHORT).show();
                         viewProducts();
 
@@ -81,11 +95,91 @@ public class AdminPanel extends AppCompatActivity {
                     else{
                         Toast.makeText(AdminPanel.this, "Course Does Not Exist", Toast.LENGTH_SHORT).show();
                     }
+                    dbHandler.close();
 
 
 
             }
         });
+
+        deleteUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String userAcc = courseID.getText().toString();
+                String userAcc2 = courseName.getText().toString();
+
+                if(userAcc.equals("") && userAcc2.equals("")){
+
+                    courseID.setHint("Please Enter a User Name");
+                    courseName.setHint("Please Re-Enter a User Name");
+                    confirmID.setVisibility(View.INVISIBLE);
+
+                }
+                else{
+                    if(userAcc.equals(userAcc2)&&dbHandler.userExists(userAcc)){
+                        dbHandler.deleteUser(userAcc);
+                        Toast.makeText(AdminPanel.this, "Deleted user "+userAcc, Toast.LENGTH_SHORT).show();
+                        courseID.setHint("Enter Course Code: ");
+                        courseName.setHint("Enter Course Name:");
+                        confirmID.setVisibility(View.INVISIBLE);
+                    }
+                    else{
+                        Toast.makeText(AdminPanel.this, "Failed to delete User", Toast.LENGTH_SHORT).show();
+                        courseID.setHint("Enter Course Code: ");
+                        courseName.setHint("Enter Course Name:");
+                        courseID.setText("");
+                        courseName.setText("");
+                        confirmID.setVisibility(View.INVISIBLE);
+                    }
+                    dbHandler.close();
+                }
+            }
+        });
+
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String corID = courseID.getText().toString();
+                String corName = courseName.getText().toString();
+
+                int  radioID= radioGrouping.getCheckedRadioButtonId();
+
+
+                if(corName.isEmpty()&&corID.isEmpty()){
+
+                    confirmID.setVisibility(View.VISIBLE);
+
+                }
+
+                else if(dbHandler.courseExists(corID, corName)){
+                    radioButtons = findViewById(radioID);
+                    String type = radioButtons.getText().toString();
+                    String confirm = confirmID.getText().toString();
+                    if(type.equals("Course Code")){
+                        dbHandler.updateCourseCode(corID, confirm);
+                        Toast.makeText(AdminPanel.this, "Course Updated", Toast.LENGTH_SHORT).show();
+                        viewProducts();
+                    }
+                    else{
+                        dbHandler.updateCourseName(corName, confirm);
+                        viewProducts();
+                    }
+
+                }
+
+                else{
+                    Toast.makeText(AdminPanel.this, "Course Failed to update", Toast.LENGTH_SHORT).show();
+                    courseID.setText("");
+                    courseName.setText("");
+                    confirmID.setVisibility(View.INVISIBLE);
+                }
+
+
+            }
+        });
+
+
         viewProducts();
 
     }
@@ -108,4 +202,10 @@ public class AdminPanel extends AppCompatActivity {
         cursor.close();
         dbHandler.close();
     }
+    public void checkButtons(View v){
+        int radioIDD = radioGrouping.getCheckedRadioButtonId();
+        radioButtons = findViewById(radioIDD);
+
+    }
+
 }

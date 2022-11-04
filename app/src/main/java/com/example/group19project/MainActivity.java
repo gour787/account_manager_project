@@ -49,11 +49,11 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
 
-                if(user.equals("") | password.equals("")){
+                else if(user.equals("") | password.equals("")){
                     Toast.makeText(MainActivity.this, "Please enter all fields",Toast.LENGTH_SHORT).show();
                 }
 
-                if(db.checkUserNameAndPassword(user, password)){
+                else if(db.checkUserNameAndPassword(user, password)){
                     ArrayList<String > details = db.findUserDetails(user);
                     String name = details.get(0);
                     String type = details.get(1);

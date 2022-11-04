@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 
 public class MyDBHandler extends SQLiteOpenHelper{
@@ -134,10 +132,40 @@ public class MyDBHandler extends SQLiteOpenHelper{
         Cursor cursor = db.rawQuery("SELECT * FROM courseTable WHERE courseCode= ? AND courseName=?"
                 ,new String[]{courseID, courseName});
         if(cursor.getCount()>0){
+            cursor.close();
             return true;
         }
+        cursor.close();
         return false;
+
     }
 
-}
+
+    public void deleteUser(String userName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_NAME , userName);
+        db.delete(TABLE_NAME, "userName=?", new String[]{userName});
+        db.close();
+    }
+
+    public void updateCourseCode(String code, String confirm) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("courseCode", confirm);
+        db.update("courseTable",values, "courseCode=?", new String[]{code});
+
+        }
+    public void updateCourseName(String name, String confirm) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("courseName", confirm);
+        db.update("courseTable",values, "courseName=?", new String[]{name});
+
+    }
+
+
+    }
+
+
 

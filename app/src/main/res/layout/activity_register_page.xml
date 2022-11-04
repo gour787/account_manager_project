@@ -84,12 +84,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:id="@+id/radioGroup"
+        android:id="@+id/radioGroup2"
         android:layout_below="@+id/buttonRegister"
         >
 
         <RadioButton
-            android:id="@+id/checkStudent"
+            android:id="@+id/editCourseName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Student "
@@ -97,7 +97,7 @@
             android:checked="true"/>
 
         <RadioButton
-            android:id="@+id/checkInstructor"
+            android:id="@+id/editCourseCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Instructor"

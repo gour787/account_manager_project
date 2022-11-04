@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -24,7 +23,7 @@ public class RegisterPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_page);
 
-        radioGroup=findViewById(R.id.radioGroup);
+        radioGroup=findViewById(R.id.radioGroup2);
         buttonRegister = findViewById(R.id.buttonRegister);
         firstName = findViewById(R.id.editFirstName);
         lastName = findViewById(R.id.editLastName);
@@ -66,7 +65,7 @@ public class RegisterPage extends AppCompatActivity {
     public void checkButton(View v){
         int radioID = radioGroup.getCheckedRadioButtonId();
         radioButton = findViewById(radioID);
-        Toast.makeText(RegisterPage.this, radioButton.getText(),Toast.LENGTH_SHORT).show();
+
     }
 
 
