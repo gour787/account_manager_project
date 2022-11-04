@@ -149,6 +149,7 @@ public class AdminPanel extends AppCompatActivity {
                 if(corName.isEmpty()&&corID.isEmpty()){
 
                     confirmID.setVisibility(View.VISIBLE);
+                    radioGrouping.setVisibility(View.VISIBLE);
 
                 }
 
@@ -157,12 +158,22 @@ public class AdminPanel extends AppCompatActivity {
                     String type = radioButtons.getText().toString();
                     String confirm = confirmID.getText().toString();
                     if(type.equals("Course Code")){
-                        dbHandler.updateCourseCode(corID, confirm);
-                        Toast.makeText(AdminPanel.this, "Course Updated", Toast.LENGTH_SHORT).show();
+                        dbHandler.updateCourseCode(corID, corName, confirm);
+                        Toast.makeText(AdminPanel.this, "Course Code Updated", Toast.LENGTH_SHORT).show();
+                        courseID.setText("");
+                        courseName.setText("");
+                        radioGrouping.setVisibility(View.INVISIBLE);
+                        confirmID.setVisibility(View.INVISIBLE);
                         viewProducts();
                     }
                     else{
+
                         dbHandler.updateCourseName(corName, confirm);
+                        Toast.makeText(AdminPanel.this, "Course Name Updated", Toast.LENGTH_SHORT).show();
+                        courseID.setText("");
+                        courseName.setText("");
+                        radioGrouping.setVisibility(View.INVISIBLE);
+                        confirmID.setVisibility(View.INVISIBLE);
                         viewProducts();
                     }
 

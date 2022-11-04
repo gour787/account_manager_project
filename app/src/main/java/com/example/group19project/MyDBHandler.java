@@ -149,11 +149,11 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.close();
     }
 
-    public void updateCourseCode(String code, String confirm) {
+    public void updateCourseCode(String code, String Name, String confirm) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("courseCode", confirm);
-        db.update("courseTable",values, "courseCode=?", new String[]{code});
+        db.update("courseTable",values, "courseCode=? AND courseName=?", new String[]{code, Name});
 
         }
     public void updateCourseName(String name, String confirm) {
