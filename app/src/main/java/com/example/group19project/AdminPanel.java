@@ -60,7 +60,7 @@ public class AdminPanel extends AppCompatActivity {
                 String corID = courseID.getText().toString();
                 String corName = courseName.getText().toString();
                 if(!corID.isEmpty()&&!corName.isEmpty()){
-                    Course course = new Course(corName, corID);
+                    Course course = new Course(corName, corID, "null", "null","null","null");
                     dbHandler.addCourse(course);
                     courseID.setText("");
                     courseName.setText("");
@@ -72,7 +72,7 @@ public class AdminPanel extends AppCompatActivity {
                     Toast.makeText(AdminPanel.this, "Add product failed", Toast.LENGTH_SHORT).show();
                 }
                 dbHandler.close();
-
+                viewProducts();
             }
         });
 
@@ -96,9 +96,7 @@ public class AdminPanel extends AppCompatActivity {
                         Toast.makeText(AdminPanel.this, "Course Does Not Exist", Toast.LENGTH_SHORT).show();
                     }
                     dbHandler.close();
-
-
-
+                viewProducts();
             }
         });
 
@@ -198,7 +196,6 @@ public class AdminPanel extends AppCompatActivity {
 
         productList.clear();
         Cursor cursor = dbHandler.getCourseData();
-
         if (cursor.getCount() == 0) {
             Toast.makeText(AdminPanel.this, "Nothing to show", Toast.LENGTH_SHORT).show();
         } else {

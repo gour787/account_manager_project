@@ -92,14 +92,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="DELETE USER"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout_instructor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayout_instructor"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="300dp"

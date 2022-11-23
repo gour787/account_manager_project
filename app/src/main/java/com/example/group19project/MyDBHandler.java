@@ -36,7 +36,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 + COLUMN_USER_PASSWORD + " TEXT, "
                 + COLUMN_USER_ACCOUNT_TYPE + " TEXT "
                 + ")";
-        String create_table_2_cmd = "CREATE TABLE "+COURSE_TABLE+"(courseCode TEXT, courseName TEXT)";
+        String create_table_2_cmd = "CREATE TABLE "+COURSE_TABLE+"(courseCode TEXT, courseName TEXT,courseInstructor TEXT, courseDescription TEXT, courseCapacity TEXT, courseTime TEXT)";
         db.execSQL(create_table_cmd);
         db.execSQL(create_table_2_cmd);
     }
@@ -54,6 +54,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return db.rawQuery(query, null); // returns "cursor" all products from the table
     }
 
+
+
     public Cursor getCourseData() {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + COURSE_TABLE;
@@ -66,6 +68,10 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         values.put("courseCode", course.getCourseID());
         values.put("courseName", course.getCourseName());
+        values.put("courseInstructor", course.getInstructor());
+        values.put("courseDescription", course.getDescription());
+        values.put("courseCapacity", course.getCapacity());
+        values.put("courseTime", course.getTime());
 
         db.insert(COURSE_TABLE, null, values);
         db.close();
@@ -100,6 +106,16 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return false;
     }
 
+    public boolean InstructorExists(String instructor){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM userAccounts WHERE userName= ? AND accountType LIKE 'Instructor%'"
+                ,new String[]{instructor});
+        if(cursor.getCount()>0){
+            return true;
+        }
+        return false;
+    }
+
 
 
     public Boolean checkUserNameAndPassword(String userName, String passWord){
@@ -127,6 +143,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.close();
         return findList;
     }
+
     public Boolean courseExists(String courseID, String courseName){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM courseTable WHERE courseCode= ? AND courseName=?"
@@ -139,6 +156,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return false;
 
     }
+
+
 
 
     public void deleteUser(String userName){
@@ -161,6 +180,82 @@ public class MyDBHandler extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put("courseName", confirm);
         db.update("courseTable",values, "courseName=?", new String[]{name});
+
+    }
+
+    public void updateCourseDescription(String name, String code, String Description) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("courseDescription", Description);
+        db.update("courseTable",values, "courseName=? AND courseCode=?", new String[]{name,code});
+
+    }
+
+    public void updateCourseTime(String name, String code, String Time) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("courseTime", Time);
+        db.update("courseTable",values, "courseName=? AND courseCode=?", new String[]{name,code});
+
+    }
+
+    public void updateCourseCapacity(String name, String code, String Capacity) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("courseCapacity", Capacity);
+        db.update("courseTable",values, "courseName=? AND courseCode=?", new String[]{name,code});
+
+    }
+
+    public void updateCourseInstructor(String name, String code, String instructor) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("courseInstructor", instructor);
+        db.update("courseTable",values, "courseName=? AND courseCode=?", new String[]{name,code});
+
+    }
+
+    public boolean findCourseInstructor(String name, String code, String instructor) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM courseTable WHERE courseCode= ? AND courseName=? AND courseInstructor=?"
+                ,new String[]{code, name, instructor});
+        if(cursor.getCount()>0){
+            cursor.close();
+            return true;
+        }
+        cursor.close();
+        return false;
+
+    }
+
+
+    public Cursor findList(String names) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + COURSE_TABLE + " WHERE courseName LIKE ?";
+        return db.rawQuery(query, new String[]{names}); // returns "cursor" all products from the table
+
+
+
+    }
+
+    public Cursor findLists(String code) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + COURSE_TABLE + " WHERE courseCode LIKE ?";
+        return db.rawQuery(query, new String[]{code}); // returns "cursor" all products from the table
+
+
+
+    }
+
+    public Cursor findsLists(String name, String code) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + COURSE_TABLE + " WHERE courseCode LIKE ? AND courseName LIKE ?";
+        return db.rawQuery(query, new String[]{code,name}); // returns "cursor" all products from the table
+
+
 
     }
 

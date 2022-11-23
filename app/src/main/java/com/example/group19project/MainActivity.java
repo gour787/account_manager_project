@@ -54,6 +54,16 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 else if(db.checkUserNameAndPassword(user, password)){
+                    if(db.InstructorExists(user)){
+                        ArrayList<String > details = db.findUserDetails(user);
+                        String name = details.get(0);
+                        Intent intent = new Intent(MainActivity.this, InstructorPanel.class);
+                        intent.putExtra(FIRST_NAME, name);
+                        startActivity(intent);
+                    }
+                }
+
+                else if(db.checkUserNameAndPassword(user, password)){
                     ArrayList<String > details = db.findUserDetails(user);
                     String name = details.get(0);
                     String type = details.get(1);
