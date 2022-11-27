@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     MyDBHandler db;
     public static final String FIRST_NAME = "First name";
     public static final String ACCOUNT_TYPE = "User type";
+    public static final String USER_NAME = "User type";
 
 
 
@@ -61,7 +62,20 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra(FIRST_NAME, name);
                         startActivity(intent);
                     }
+
+                    if(db.StudentExists(user)){
+                        ArrayList<String > details = db.findUserDetails(user);
+                        String name = details.get(0);
+                        Intent intent = new Intent(MainActivity.this,StudentPanel.class);
+                        intent.putExtra(FIRST_NAME, name);
+                        intent.putExtra(USER_NAME,user);
+                        startActivity(intent);
+                    }
                 }
+
+
+
+
 
                 else if(db.checkUserNameAndPassword(user, password)){
                     ArrayList<String > details = db.findUserDetails(user);

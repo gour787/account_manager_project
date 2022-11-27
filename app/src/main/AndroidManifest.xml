@@ -15,6 +15,13 @@
         android:theme="@style/Theme.Group19Project"
         tools:targetApi="31">
         <activity
+            android:name=".StudentPanel"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".updated"
             android:exported="false">
             <meta-data

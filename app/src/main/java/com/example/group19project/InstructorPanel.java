@@ -200,11 +200,13 @@ public class InstructorPanel extends AppCompatActivity {
                 viewHolder.courseCode2 = (TextView) convertView.findViewById(R.id.courseCode2);
 
 
-///
+
                 viewHolder.changeInfo = (Button) convertView.findViewById(R.id.changeInfo);
                 viewHolder.changeInfo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        finish();
+                        fullList();
                         String[] teach = courseList.get(position).split(",");
                         if(Objects.equals(teach[2], "null")){
                             Intent intent = new Intent(InstructorPanel.this, updated.class);
@@ -213,6 +215,7 @@ public class InstructorPanel extends AppCompatActivity {
                             startActivity(intent);
                         }
                         if(Objects.equals(teach[2], name)){
+
                             Intent intent = new Intent(InstructorPanel.this, updated.class);
                             intent.putExtra(COURSE_INFO, courseList.get(position));
                             intent.putExtra(FIRST_NAME, name);
@@ -220,7 +223,8 @@ public class InstructorPanel extends AppCompatActivity {
                         }
 
                         else{
-                            Toast.makeText(InstructorPanel.this, "Course has a teacher", Toast.LENGTH_SHORT).show();
+
+                            Toast.makeText(InstructorPanel.this, "Teacher already assigned to course", Toast.LENGTH_SHORT).show();
                         }
 
 

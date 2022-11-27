@@ -6,6 +6,8 @@ public class Information {
     private String userName;
     private String password;
     private String accountType;
+    private String courses;
+    private String timeBusy;
 
     public String getFirstName() {
         return firstName;
@@ -48,16 +50,29 @@ public class Information {
     }
 
 
+    public String getCourses() {
+        return courses;
+    }
+
+    public String getTimeBusy() {
+        return timeBusy;
+    }
+
+
+
     public Information(){
 
     }
 
 
-    public Information(String firstName, String lastName, String userName, String password, String accountType) {
+    public Information(String firstName, String lastName, String userName, String password, String accountType, String courses, String timeBusy) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
         this.password = password;
         this.accountType = accountType;
+        this.courses = courses;
+        this.timeBusy=timeBusy;
+
     }
 }

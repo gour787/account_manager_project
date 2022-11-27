@@ -44,7 +44,7 @@ public class RegisterPage extends AppCompatActivity {
                 String last = lastName.getText().toString();
                 String user = userName.getText().toString();
                 String pass = password.getText().toString();
-                Information info = new Information(name, last, user, pass, type);
+                Information info = new Information(name, last, user, pass, type, "","");
 
                 if(dbHandler.userExists(user)){
                     Toast.makeText(RegisterPage.this, "User already exists! ",Toast.LENGTH_SHORT).show();

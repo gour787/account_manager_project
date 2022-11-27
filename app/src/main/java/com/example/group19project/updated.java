@@ -53,9 +53,9 @@ public class updated extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dbHandler.updateCourseInstructor(names,code,"null");
-                dbHandler.updateCourseDescription(names, code, "null");
-                dbHandler.updateCourseCapacity(names, code, "null");
-                dbHandler.updateCourseTime(names, code, "null");
+                dbHandler.updateCourseDescription(names, code, "null","null");
+                dbHandler.updateCourseCapacity(names, code, "null","null");
+                dbHandler.updateCourseTime(names, code, "null","null");
                 Intent intent = new Intent(updated.this, InstructorPanel.class);
                 startActivity(intent);
             }
@@ -96,15 +96,15 @@ public class updated extends AppCompatActivity {
                 String capacity = editCapacity.getText().toString();
                 dbHandler.updateCourseInstructor(names,code,name);
                 if(description.length()>0){
-                    dbHandler.updateCourseDescription(names, code, description);
+                    dbHandler.updateCourseDescription(names, code, description,name);
                     Toast.makeText(updated.this, "description updated", Toast.LENGTH_SHORT).show();
                 }
                 if(capacity.length()>0&&validCapacity(capacity)){
-                    dbHandler.updateCourseCapacity(names, code, capacity);
+                    dbHandler.updateCourseCapacity(names, code, capacity,name);
                     Toast.makeText(updated.this, "capacity updated", Toast.LENGTH_SHORT).show();
                 }
                 if(stringy.toString().length()>0){
-                    dbHandler.updateCourseTime(names, code, stringy.toString());
+                    dbHandler.updateCourseTime(names, code, stringy.toString(),name);
                     stringy.setLength(0);
                     Toast.makeText(updated.this, "Time slots updated", Toast.LENGTH_SHORT).show();
                 }
